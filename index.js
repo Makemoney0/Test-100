@@ -43,3 +43,20 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`🚀 Voice Agent läuft auf Port ${PORT}`);
 });
+// 🔹 7. Twilio-Webhook für eingehende Anrufe
+app.post("/call", express.urlencoded({ extended: false }), (req, res) => {
+  const twiml = `
+    <Response>
+      <Say voice="alice" language="de-DE">
+        Hallo, Sie haben das Restaurant erreicht. 
+        Möchten Sie eine Reservierung vornehmen oder eine Bestellung aufgeben?
+      </Say>
+      <Pause length="2"/>
+      <Say voice="alice" language="de-DE">
+        Bitte sagen Sie jetzt, was Sie wünschen.
+      </Say>
+    </Response>
+  `;
+  res.type("text/xml");
+  res.send(twiml);
+});
